@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.API", "BMS.API\BMS.API.csproj", "{330613A6-FFE0-478F-985A-223D38BC700D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.API", "BMS.API\BMS.API.csproj", "{330613A6-FFE0-478F-985A-223D38BC700D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.Models", "BMS.Models\BMS.Models.csproj", "{FABFF5E3-47DC-4F13-8233-ACA9F989C358}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Models", "BMS.Models\BMS.Models.csproj", "{FABFF5E3-47DC-4F13-8233-ACA9F989C358}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.Infrastructure", "BMS.Infrastructure\BMS.Infrastructure.csproj", "{2BF31DA6-0803-4F04-9546-906AC121D5CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Infrastructure", "BMS.Infrastructure\BMS.Infrastructure.csproj", "{2BF31DA6-0803-4F04-9546-906AC121D5CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.Services", "BMS.Services\BMS.Services.csproj", "{92A334C9-B3B3-4182-8BA5-46ED11A125C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Services", "BMS.Services\BMS.Services.csproj", "{92A334C9-B3B3-4182-8BA5-46ED11A125C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.Tests", "BMS.Tests\BMS.Tests.csproj", "{EDD15671-57CF-433E-BE19-5D5A331682FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{92A334C9-B3B3-4182-8BA5-46ED11A125C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92A334C9-B3B3-4182-8BA5-46ED11A125C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92A334C9-B3B3-4182-8BA5-46ED11A125C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD15671-57CF-433E-BE19-5D5A331682FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD15671-57CF-433E-BE19-5D5A331682FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD15671-57CF-433E-BE19-5D5A331682FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD15671-57CF-433E-BE19-5D5A331682FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

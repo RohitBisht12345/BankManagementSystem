@@ -17,7 +17,7 @@ namespace BMS.API.Controllers
         private readonly IConfiguration _config;
         public AuthController(IConfiguration config)
         {
-            _config = config;
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         [AllowAnonymous]
@@ -25,6 +25,8 @@ namespace BMS.API.Controllers
         public IActionResult Authenticate([FromBody] UserModel login)
         {
             IActionResult response = Unauthorized();
+            login ??= new UserModel();
+
             var user = AuthenticateUser(login);
 
             if (user != null)

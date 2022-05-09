@@ -1,5 +1,6 @@
 ﻿using BMS.Models.Entities;
 using BMS.Services.Abstraction;
+using System;
 using System.Collections.Generic;
 
 namespace BMS.Services.Implementation
@@ -26,6 +27,18 @@ namespace BMS.Services.Implementation
             if (string.IsNullOrEmpty(request.LoanType))
             {
                 ValidationErrors.AddLast($"{nameof(request.LoanType)} must have a value");
+            }
+            if (string.IsNullOrEmpty(request.LoanDuration))
+            {
+                ValidationErrors.AddLast($"{nameof(request.LoanDuration)} must have a value");
+            }
+            if (request.LoanDate == DateTime.MinValue)
+            {
+                ValidationErrors.AddLast($"{nameof(request.LoanDate)} must have a value");
+            }
+            if (string.IsNullOrEmpty(request.InterestRate))
+            {
+                ValidationErrors.AddLast($"{nameof(request.InterestRate)} must have a value");
             }
             return ValidationErrors;
         }
