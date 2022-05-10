@@ -53,7 +53,7 @@ namespace BMS.Services.Implementation
             }
             else
             {
-                IEnumerable<string> error = new[] { "Username must have a value", "Password must have a value" };
+                IEnumerable<string> error = new[] { "Username and Password must have a value" };
                 var errorResponse = new BmsResponse<Accounts>()
                 {
                     IsSuccess = false,
