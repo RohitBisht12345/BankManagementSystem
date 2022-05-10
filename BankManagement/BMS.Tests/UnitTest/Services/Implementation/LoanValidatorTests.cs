@@ -33,11 +33,10 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         [Test]
         [UseFakeDependencies]
         public void LoanValidatewithInvalidRequest(
-            Loans request,
             LoanValidators subject)
         {
             //Arrange
-            request = new Loans();
+            Loans request = new();
 
             //Act
             var validationErrors = subject.Validate(request);

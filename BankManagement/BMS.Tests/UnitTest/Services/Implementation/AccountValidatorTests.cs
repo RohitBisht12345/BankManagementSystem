@@ -16,11 +16,10 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         [Test]
         [UseFakeDependencies]
         public void AccountValidatewithNullRequest(
-            Accounts request, 
             AccountValidators subject)
         {
             //Arrange
-            request = null;
+            Accounts request = null;
 
             //Act
             var validationError = subject.Validate(request);
@@ -33,11 +32,10 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         [Test]
         [UseFakeDependencies]
         public void AccountValidatewithInvalidRequest(
-            Accounts request,
             AccountValidators subject)
         {
             //Arrange
-            request = new Accounts();
+            Accounts request = new();
 
             //Act
             var validationErrors = subject.Validate(request);
