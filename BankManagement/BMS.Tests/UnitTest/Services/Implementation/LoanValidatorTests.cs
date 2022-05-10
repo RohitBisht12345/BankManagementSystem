@@ -3,13 +3,10 @@ using BMS.Services.Implementation;
 using BMS.Tests.Autofixture;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BMS.Tests.UnitTest.Services.Implementation
-{ 
+{
     [TestFixture]
     public class LoanValidatorTests
     {

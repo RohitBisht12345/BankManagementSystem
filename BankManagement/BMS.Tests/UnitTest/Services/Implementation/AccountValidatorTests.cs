@@ -3,16 +3,13 @@ using BMS.Services.Implementation;
 using BMS.Tests.Autofixture;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BMS.Tests.UnitTest.Services.Implementation
 {
     [TestFixture]
     public class AccountValidatorTests
-    {   
+    {
         [Test]
         [UseFakeDependencies]
         public void AccountValidatewithNullRequest(
@@ -23,7 +20,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
 
             //Act
             var validationError = subject.Validate(request);
-            bool response= validationError.Contains("request must have a value");
+            bool response = validationError.Contains("request must have a value");
 
             //Assert
             Assert.IsTrue(response);

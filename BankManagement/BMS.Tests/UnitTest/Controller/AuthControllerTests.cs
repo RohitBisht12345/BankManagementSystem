@@ -1,16 +1,10 @@
 ﻿using BMS.API.Controllers;
 using BMS.API.Models;
 using BMS.Tests.Autofixture;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BMS.Tests.UnitTest.Controller
 {
@@ -45,7 +39,7 @@ namespace BMS.Tests.UnitTest.Controller
 
         [Test]
         [UseFakeDependencies]
-        public void Authenticate_WithInValidRequest_ReturnUnauthorizedError(
+        public void Authenticate_WithInValidRequest_ReturnUnauthorizedResponse(
            UserModel request,
            IConfiguration config)
         {

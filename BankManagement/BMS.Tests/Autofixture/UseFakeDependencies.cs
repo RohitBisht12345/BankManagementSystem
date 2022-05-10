@@ -5,27 +5,23 @@ using BMS.API.Models;
 using BMS.Infrastructure.Abstraction;
 using BMS.Models.Entities;
 using BMS.Services.Abstraction;
-using BMS.Services.Models;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BMS.Tests.Autofixture
 {
     public class UseFakeDependencies : AutoDataAttribute
     {
-        public UseFakeDependencies():base(CreateFixture)
+        public UseFakeDependencies() : base(CreateFixture)
         {
 
         }
 
         private static IFixture CreateFixture()
         {
-
             var fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization { ConfigureMembers = true });
 
@@ -84,26 +80,25 @@ namespace BMS.Tests.Autofixture
 
             var mockAccountRepository = fixture.Freeze<Mock<IAccountRepository>>();
             mockAccountRepository.Setup(x => x.GetAccount(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new Accounts() { AccountID= Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") });
+                .Returns(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") });
 
             mockAccountRepository.Setup(x => x.RegisterAccount(It.IsAny<Accounts>()))
-              .Returns( Task.FromResult(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") }));
+                .Returns(Task.FromResult(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") }));
 
             mockAccountRepository.Setup(x => x.GetAccountById(It.IsAny<Guid>()))
-             .Returns(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") });
+                .Returns(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") });
 
             mockAccountRepository.Setup(x => x.UpdateAccount(It.IsAny<Accounts>()))
-           .Returns(Task.FromResult(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") }));
+                .Returns(Task.FromResult(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") }));
 
             var mockLoanRepository = fixture.Freeze<Mock<ILoanRepository>>();
             mockLoanRepository.Setup(x => x.GetLoanById(It.IsAny<Guid>()))
                 .Returns(new Loans() { LoanID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa3") });
 
             mockLoanRepository.Setup(x => x.RegisterLoan(It.IsAny<Loans>()))
-             .Returns(Task.FromResult(new Loans() { LoanID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa3") }));
+                .Returns(Task.FromResult(new Loans() { LoanID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa3") }));
 
             return fixture;
         }
-
     }
 }

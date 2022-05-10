@@ -3,16 +3,12 @@ using BMS.Infrastructure.Abstraction;
 using BMS.Models.Entities;
 using BMS.Services.Abstraction;
 using BMS.Services.Implementation;
-using BMS.Services.Models;
 using BMS.Tests.Autofixture;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BMS.Tests.UnitTest.Services.Implementation
@@ -189,7 +185,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
             RequestProcessor subject)
         {
             //Arrange
-            
+
 
             //Act
             var response = await subject.GetLoan(account.AccountID);
@@ -298,7 +294,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         {
             //Arrange
             loan.LoanAmount = null;
-            mockLoanValidator.Setup(x => x.Validate(It.IsAny<Loans>())).Returns(new string[] { "LoanAmount must have a value"});
+            mockLoanValidator.Setup(x => x.Validate(It.IsAny<Loans>())).Returns(new string[] { "LoanAmount must have a value" });
 
 
             //Act
