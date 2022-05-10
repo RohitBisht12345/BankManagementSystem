@@ -3,6 +3,7 @@ using BMS.Infrastructure.Abstraction;
 using BMS.Models.Entities;
 using BMS.Services.Abstraction;
 using BMS.Services.Implementation;
+using BMS.Services.Models;
 using BMS.Tests.Autofixture;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -241,9 +242,10 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         [Test]
         [UseFakeDependencies]
         public async Task PostAccount_WithValidRequest_ReturnSuccessResponse(
-           Accounts account,
+            Accounts account,
            RequestProcessor subject)
         {
+
             //Act
             var response = await subject.PostAccount(account);
 
@@ -256,12 +258,13 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         [Test]
         [UseFakeDependencies]
         public async Task PostAccount_WithNullRequest_ReturnErrorResponse(
-          Accounts account,
+            [Frozen] Mock<IValidators<Accounts>> mockAccountValidator,
+            Accounts account,
           RequestProcessor subject)
         {
             //Arrange
             account.UserName = null;
-            account.Password = null;
+            mockAccountValidator.Setup(x => x.Validate(It.IsAny<Accounts>())).Returns(new string[] { "Username must have a value" });
 
             //Act
             var response = await subject.PostAccount(account);
@@ -289,15 +292,72 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         [Test]
         [UseFakeDependencies]
         public async Task PostLoan_WithNullRequest_ReturnErrorResponse(
+          [Frozen] Mock<IValidators<Loans>> mockLoanValidator,
           Loans loan,
           RequestProcessor subject)
         {
             //Arrange
             loan.LoanAmount = null;
-            loan.LoanType = null;
+            mockLoanValidator.Setup(x => x.Validate(It.IsAny<Loans>())).Returns(new string[] { "LoanAmount must have a value"});
+
 
             //Act
             var response = await subject.PostLoan(loan);
+
+            //Assert
+            response.Errors.ShouldNotBe(null);
+            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.ValidationFailed);
+        }
+
+        [Test]
+        [UseFakeDependencies]
+        public async Task PutAccount_WithValidRequest_ReturnSuccessResponse(
+          Accounts account,
+          RequestProcessor subject)
+        {
+            //Act
+            var response = await subject.PutAccount(account);
+
+            //Assert
+            response.Errors.ShouldBe(null);
+            response.Data.ShouldNotBe(null);
+            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.Success);
+        }
+
+        [Test]
+        [UseFakeDependencies]
+        public async Task PutAccount_WithValidRequest_ReturnErrorResponse(
+        [Frozen] Mock<IAccountRepository> mockAccountRepository,
+        Accounts account,
+        RequestProcessor subject)
+        {
+            //Arrange
+            Accounts accountResult = null;
+            mockAccountRepository.Setup(x => x.GetAccountById(It.IsAny<Guid>()))
+            .Returns(accountResult);
+
+            //Act
+            var response = await subject.PutAccount(account);
+
+            //Assert
+            response.Errors.ShouldBe(null);
+            response.Data.ShouldBe(null);
+            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.NotFound);
+        }
+
+        [Test]
+        [UseFakeDependencies]
+        public async Task PutAccount_WithNullRequest_ReturnErrorResponse(
+        [Frozen] Mock<IValidators<Accounts>> mockAccountValidator,
+        Accounts account,
+        RequestProcessor subject)
+        {
+            //Arrange
+            account.UserName = null;
+            mockAccountValidator.Setup(x => x.Validate(It.IsAny<Accounts>())).Returns(new string[] { "Username must have a value" });
+
+            //Act
+            var response = await subject.PutAccount(account);
 
             //Assert
             response.Errors.ShouldNotBe(null);

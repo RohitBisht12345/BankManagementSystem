@@ -1,10 +1,12 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.NUnit3;
+using BMS.API.Models;
 using BMS.Infrastructure.Abstraction;
 using BMS.Models.Entities;
 using BMS.Services.Abstraction;
 using BMS.Services.Models;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,7 @@ namespace BMS.Tests.Autofixture
 
         private static IFixture CreateFixture()
         {
+
             var fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization { ConfigureMembers = true });
 
@@ -43,6 +46,13 @@ namespace BMS.Tests.Autofixture
                 .With(x => x.AccountType, "Saving");
             });
 
+            fixture.Customize<UserModel>(option =>
+            {
+                return option
+                .With(x => x.Username, "admin")
+                .With(x => x.Password, "admin");
+            });
+
             fixture.Customize<Loans>(option =>
             {
                 return option
@@ -53,6 +63,16 @@ namespace BMS.Tests.Autofixture
                 .With(x => x.InterestRate, "India")
                 .With(x => x.LoanDate, DateTime.Parse("2022-05-06T13:01:09.307"));
             });
+
+            var keys = new Dictionary<string, string>
+            {
+                {"Jwt:Key", "ThisismySecretKey" },
+                {"Jwt:Issuer", "Test.com"}
+            };
+
+            var configuration = fixture.Freeze<IConfiguration>();
+            var mockConfiguration = Mock.Get(configuration);
+            mockConfiguration.Setup(_ => _[It.IsAny<string>()]).Returns((string key) => keys[key]);
 
             var mockAccountValidator = fixture.Freeze<Mock<IValidators<Accounts>>>();
             mockAccountValidator.Setup(x => x.Validate(It.IsAny<Accounts>()))
@@ -69,13 +89,18 @@ namespace BMS.Tests.Autofixture
             mockAccountRepository.Setup(x => x.RegisterAccount(It.IsAny<Accounts>()))
               .Returns( Task.FromResult(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") }));
 
+            mockAccountRepository.Setup(x => x.GetAccountById(It.IsAny<Guid>()))
+             .Returns(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") });
+
+            mockAccountRepository.Setup(x => x.UpdateAccount(It.IsAny<Accounts>()))
+           .Returns(Task.FromResult(new Accounts() { AccountID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") }));
+
             var mockLoanRepository = fixture.Freeze<Mock<ILoanRepository>>();
             mockLoanRepository.Setup(x => x.GetLoanById(It.IsAny<Guid>()))
-                .Returns(new Loans() { LoanID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") });
+                .Returns(new Loans() { LoanID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa3") });
 
             mockLoanRepository.Setup(x => x.RegisterLoan(It.IsAny<Loans>()))
-             .Returns(Task.FromResult(new Loans() { LoanID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2") }));
-
+             .Returns(Task.FromResult(new Loans() { LoanID = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa3") }));
 
             return fixture;
         }
