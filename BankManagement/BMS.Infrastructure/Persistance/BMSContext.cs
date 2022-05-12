@@ -15,7 +15,7 @@ namespace BMS.Infrastructure.Persistance
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\ProjectsV13; Database=BMS_DB; Trusted_Connection=True; MultipleActiveResultSets=True;");
+            optionsBuilder.UseSqlServer("Server=bankdb,1433;Database=BankDb;User Id=SA;Password=SwN12345678;");
         }
     }
 }

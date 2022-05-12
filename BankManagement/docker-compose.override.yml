@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  bms.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - "bankdb"
+    ports:
+      - "8001:80"
+
+  bankdb:
+    container_name: bankdb
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+        SA_PASSWORD: "SwN12345678"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+      - "1433:1433" 
+

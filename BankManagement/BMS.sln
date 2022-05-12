@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Infrastructure", "BMS.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Services", "BMS.Services\BMS.Services.csproj", "{92A334C9-B3B3-4182-8BA5-46ED11A125C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.Tests", "BMS.Tests\BMS.Tests.csproj", "{EDD15671-57CF-433E-BE19-5D5A331682FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.Tests", "BMS.Tests\BMS.Tests.csproj", "{EDD15671-57CF-433E-BE19-5D5A331682FD}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{83F6EE91-8B96-4F9D-9644-8A629F1EE08A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{EDD15671-57CF-433E-BE19-5D5A331682FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDD15671-57CF-433E-BE19-5D5A331682FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDD15671-57CF-433E-BE19-5D5A331682FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F6EE91-8B96-4F9D-9644-8A629F1EE08A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F6EE91-8B96-4F9D-9644-8A629F1EE08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F6EE91-8B96-4F9D-9644-8A629F1EE08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F6EE91-8B96-4F9D-9644-8A629F1EE08A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
