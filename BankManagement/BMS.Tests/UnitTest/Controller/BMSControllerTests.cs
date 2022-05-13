@@ -8,6 +8,7 @@ using BMS.Tests.Autofixture;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -31,15 +32,12 @@ namespace BMS.Tests.UnitTest.Controller
         [Test]
         [UseFakeDependencies]
         public async Task GetAccount_ReturnSuccessResponse(
+            Accounts account,
             RequestProcessor requestProcessor)
         {
-            //Arrange
-            string username = "admin1";
-            string password = "admin1";
-
             //Act
             var subject = new BmsController(requestProcessor);
-            var response = await subject.GetAccount(username, password);
+            var response = await subject.GetAccount(account.AccountID);
 
             //Assert
             Assert.AreEqual(((int)HttpStatusCode.OK), ((Microsoft.AspNetCore.Mvc.ObjectResult)response).StatusCode);
@@ -54,15 +52,13 @@ namespace BMS.Tests.UnitTest.Controller
         {
             //Arrange
             account = null;
-            string username = "admin";
-            string password = "admin";
 
-            mockAccountRepository.Setup(x => x.GetAccount(It.IsAny<string>(), It.IsAny<string>()))
+            mockAccountRepository.Setup(x => x.GetAccountById(It.IsAny<Guid>()))
                 .Returns(account);
 
             //Act
             var subject = new BmsController(requestProcessor);
-            var response = await subject.GetAccount(username, password);
+            var response = await subject.GetAccount(Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2"));
 
             //Assert
             Assert.AreEqual(((int)HttpStatusCode.NotFound), ((Microsoft.AspNetCore.Mvc.ObjectResult)response).StatusCode);
@@ -73,13 +69,9 @@ namespace BMS.Tests.UnitTest.Controller
         public async Task GetAccount_ReturnBadRequestResponse(
             RequestProcessor requestProcessor)
         {
-            //Arrange
-            string username = null;
-            string password = null;
-
             //Act
             var subject = new BmsController(requestProcessor);
-            var response = await subject.GetAccount(username, password);
+            var response = await subject.GetAccount(Guid.Empty);
 
             //Assert
             Assert.AreEqual(((int)HttpStatusCode.BadRequest), ((Microsoft.AspNetCore.Mvc.ObjectResult)response).StatusCode);
@@ -103,15 +95,14 @@ namespace BMS.Tests.UnitTest.Controller
         [UseFakeDependencies]
         public async Task GetLoan_ReturnNotFoundResponse(
             Accounts account,
-            Loans loan,
             RequestProcessor requestProcessor,
             [Frozen] Mock<ILoanRepository> mockLoanRepository)
         {
             //Arrange
-            loan = null;
+            List<Loans> lstLoans = null;
 
             mockLoanRepository.Setup(x => x.GetLoanById(It.IsAny<Guid>()))
-                .Returns(loan);
+                .Returns(lstLoans);
 
             //Act
             var subject = new BmsController(requestProcessor);
@@ -144,6 +135,7 @@ namespace BMS.Tests.UnitTest.Controller
            Accounts account,
            RequestProcessor requestProcessor)
         {
+            account = null;
             //Act
             var subject = new BmsController(requestProcessor);
             var response = await subject.PostAccount(account);

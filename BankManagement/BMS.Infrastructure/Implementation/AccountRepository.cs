@@ -16,10 +16,10 @@ namespace BMS.Infrastructure.Implementation
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public Accounts GetAccount(string username, string password)
+        public bool GetAccount(string username, string password)
         {
 
-            return _dbContext.Set<Accounts>().Where(x => x.UserName == username && x.Password == password).FirstOrDefault();
+            return _dbContext.Set<Accounts>().Where(x => x.UserName == username && x.Password == password).Any();
         }
 
         public Accounts GetAccountById(Guid accountId)

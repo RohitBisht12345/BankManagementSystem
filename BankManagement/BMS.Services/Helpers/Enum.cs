@@ -1,4 +1,4 @@
-﻿namespace BMS.Services.Models
+﻿namespace BMS.Services.Helpers
 {
     public enum ResponseCode
     {

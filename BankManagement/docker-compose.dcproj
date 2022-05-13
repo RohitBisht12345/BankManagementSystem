@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>83f6ee91-8b96-4f9d-9644-8a629f1ee08a</ProjectGuid>
+    <ProjectGuid>9afb3186-fce5-4269-9d71-07e49e1d592a</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>bms.api</DockerServiceName>

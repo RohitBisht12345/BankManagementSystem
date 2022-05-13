@@ -1,4 +1,5 @@
 ﻿using BMS.API.Models;
+using BMS.Infrastructure.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,9 +16,11 @@ namespace BMS.API.Controllers
     public class AuthController : Controller
     {
         private readonly IConfiguration _config;
-        public AuthController(IConfiguration config)
+        protected readonly IAccountRepository _accountRepository;
+        public AuthController(IConfiguration config, IAccountRepository accountRepository)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
         }
 
         [AllowAnonymous]
@@ -27,9 +30,9 @@ namespace BMS.API.Controllers
             IActionResult response = Unauthorized();
             login ??= new UserModel();
 
-            var user = AuthenticateUser(login);
+            bool validUser = AuthenticateUser(login);
 
-            if (user != null)
+            if (validUser)
             {
                 var tokenString = GenerateJSONWebToken();
                 response = Ok(new { token = tokenString });
@@ -52,15 +55,11 @@ namespace BMS.API.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private static UserModel AuthenticateUser(UserModel login)
+        private bool AuthenticateUser(UserModel login)
         {
-            UserModel user = null;
+            var IsValid = _accountRepository.GetAccount(login.Username.Trim(), login.Password.Trim());
 
-            if (login.Username == "admin" && login.Password == "admin")
-            {
-                user = new UserModel { Username = "admin", Password = "admin" };
-            }
-            return user;
+            return IsValid;
         }
     }
 }

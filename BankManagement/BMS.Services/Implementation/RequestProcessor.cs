@@ -1,7 +1,7 @@
 ﻿using BMS.Infrastructure.Abstraction;
 using BMS.Models.Entities;
 using BMS.Services.Abstraction;
-using BMS.Services.Models;
+using BMS.Services.Helpers;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -32,28 +32,12 @@ namespace BMS.Services.Implementation
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Task<BmsResponse<Accounts>> GetAccount(string username, string password)
+        public Task<BmsResponse<Accounts>> GetAccountById(Guid accountId)
         {
             _logger.LogInformation("GetAccount processing...");
-            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            if (accountId.Equals(Guid.Empty))
             {
-                var accountResponse = _accountRepository.GetAccount(username, password);
-
-                var successResponse = new BmsResponse<Accounts>()
-                {
-                    IsSuccess = accountResponse != null,
-                    ResponseCode = accountResponse != null ? ResponseCode.Success : ResponseCode.NotFound,
-                    Errors = null,
-                    Data = accountResponse,
-                    Message = accountResponse != null ? Constants.Success : Constants.RecordNotFound
-                };
-
-                _logger.LogInformation("GetAccount completed");
-                return Task.FromResult(successResponse);
-            }
-            else
-            {
-                IEnumerable<string> error = new[] { "Username and Password must have a value" };
+                IEnumerable<string> error = new[] { "AccountId must not be empty" };
                 var errorResponse = new BmsResponse<Accounts>()
                 {
                     IsSuccess = false,
@@ -65,15 +49,29 @@ namespace BMS.Services.Implementation
                 _logger.LogError("Validation failed");
                 return Task.FromResult(errorResponse);
             }
+            else
+            {
+                var loanResponse = _accountRepository.GetAccountById(accountId);
+                var successResponse = new BmsResponse<Accounts>()
+                {
+                    IsSuccess = loanResponse != null,
+                    ResponseCode = loanResponse != null ? ResponseCode.Success : ResponseCode.NotFound,
+                    Errors = null,
+                    Data = loanResponse,
+                    Message = loanResponse != null ? Constants.Success : Constants.RecordNotFound
+                };
+                _logger.LogInformation("GetAccount completed");
+                return Task.FromResult(successResponse);
+            }
         }
 
-        public Task<BmsResponse<Loans>> GetLoan(Guid accountId)
+        public Task<BmsResponse<IEnumerable<Loans>>> GetLoan(Guid accountId)
         {
             _logger.LogInformation("GetLoan processing...");
             if (accountId.Equals(Guid.Empty))
             {
                 IEnumerable<string> error = new[] { "AccountId must not be empty" };
-                var errorResponse = new BmsResponse<Loans>()
+                var errorResponse = new BmsResponse<IEnumerable<Loans>>()
                 {
                     IsSuccess = false,
                     ResponseCode = ResponseCode.ValidationFailed,
@@ -87,7 +85,7 @@ namespace BMS.Services.Implementation
             else
             {
                 var loanResponse = _loanRepository.GetLoanById(accountId);
-                var successResponse = new BmsResponse<Loans>()
+                var successResponse = new BmsResponse<IEnumerable<Loans>>()
                 {
                     IsSuccess = loanResponse != null,
                     ResponseCode = loanResponse != null ? ResponseCode.Success : ResponseCode.NotFound,

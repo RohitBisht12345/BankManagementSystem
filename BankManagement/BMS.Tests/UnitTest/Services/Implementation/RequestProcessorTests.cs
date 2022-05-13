@@ -9,6 +9,7 @@ using Moq;
 using NUnit.Framework;
 using Shouldly;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BMS.Tests.UnitTest.Services.Implementation
@@ -124,19 +125,16 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         [Test]
         [UseFakeDependencies]
         public async Task GetAccount_WithValidRequest_ReturnSuccessResponse(
+            Accounts account,
             RequestProcessor subject)
         {
-            //Arrange
-            string username = "admin1";
-            string password = "admin1";
-
             //Act
-            var response = await subject.GetAccount(username, password);
+            var response = await subject.GetAccountById(account.AccountID);
 
             //Assert
             response.Errors.ShouldBe(null);
             response.Data.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.Success);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.Success);
         }
 
         [Test]
@@ -148,34 +146,29 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         {
             //Arrange
             account = null;
-            string username = "admin";
-            string password = "admin";
 
-            mockAccountRepository.Setup(x => x.GetAccount(It.IsAny<string>(), It.IsAny<string>()))
+            mockAccountRepository.Setup(x => x.GetAccountById(It.IsAny<Guid>()))
                 .Returns(account);
 
             //Act
-            var response = await subject.GetAccount(username, password);
+            var response = await subject.GetAccountById(Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa2"));
 
             //Assert
             response.Errors.ShouldBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.NotFound);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.NotFound);
         }
 
         [Test]
         [UseFakeDependencies]
         public async Task GetAccount_WithNullRequest_ReturnErrorResponse(RequestProcessor subject)
         {
-            //Arrange
-            string username = null;
-            string password = null;
 
             //Act
-            var response = await subject.GetAccount(username, password);
+            var response = await subject.GetAccountById(Guid.Empty);
 
             //Assert
             response.Errors.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.ValidationFailed);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.ValidationFailed);
         }
 
         [Test]
@@ -186,36 +179,34 @@ namespace BMS.Tests.UnitTest.Services.Implementation
         {
             //Arrange
 
-
             //Act
             var response = await subject.GetLoan(account.AccountID);
 
             //Assert
             response.Errors.ShouldBe(null);
             response.Data.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.Success);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.Success);
         }
 
         [Test]
         [UseFakeDependencies]
         public async Task GetLoan_WithValidRequest_ReturnErrorResponse(
             Accounts account,
-            Loans loan,
             RequestProcessor subject,
             [Frozen] Mock<ILoanRepository> mockLoanRepository)
         {
             //Arrange
-            loan = null;
+            List<Loans> lstLoans = null;
 
             mockLoanRepository.Setup(x => x.GetLoanById(It.IsAny<Guid>()))
-                .Returns(loan);
+                .Returns(lstLoans);
 
             //Act
             var response = await subject.GetLoan(account.AccountID);
 
             //Assert
             response.Errors.ShouldBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.NotFound);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.NotFound);
         }
 
         [Test]
@@ -232,7 +223,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
 
             //Assert
             response.Errors.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.ValidationFailed);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.ValidationFailed);
         }
 
         [Test]
@@ -248,7 +239,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
             //Assert
             response.Errors.ShouldBe(null);
             response.Data.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.Success);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.Success);
         }
 
         [Test]
@@ -267,7 +258,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
 
             //Assert
             response.Errors.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.ValidationFailed);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.ValidationFailed);
         }
 
         [Test]
@@ -282,7 +273,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
             //Assert
             response.Errors.ShouldBe(null);
             response.Data.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.Success);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.Success);
         }
 
         [Test]
@@ -302,7 +293,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
 
             //Assert
             response.Errors.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.ValidationFailed);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.ValidationFailed);
         }
 
         [Test]
@@ -317,7 +308,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
             //Assert
             response.Errors.ShouldBe(null);
             response.Data.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.Success);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.Success);
         }
 
         [Test]
@@ -338,7 +329,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
             //Assert
             response.Errors.ShouldBe(null);
             response.Data.ShouldBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.NotFound);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.NotFound);
         }
 
         [Test]
@@ -357,7 +348,7 @@ namespace BMS.Tests.UnitTest.Services.Implementation
 
             //Assert
             response.Errors.ShouldNotBe(null);
-            response.ResponseCode.ShouldBe(BMS.Services.Models.ResponseCode.ValidationFailed);
+            response.ResponseCode.ShouldBe(BMS.Services.Helpers.ResponseCode.ValidationFailed);
         }
     }
 }

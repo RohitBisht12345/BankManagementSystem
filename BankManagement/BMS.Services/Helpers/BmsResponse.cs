@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BMS.Services.Models
+namespace BMS.Services.Helpers
 {
     public class BmsResponse<TData>
     {

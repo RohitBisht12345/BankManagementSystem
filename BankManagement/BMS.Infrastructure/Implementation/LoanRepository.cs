@@ -2,6 +2,7 @@
 using BMS.Infrastructure.Persistance;
 using BMS.Models.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,9 +17,9 @@ namespace BMS.Infrastructure.Implementation
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public Loans GetLoanById(Guid accountId)
+        public IEnumerable<Loans> GetLoanById(Guid accountId)
         {
-            return _dbContext.Set<Loans>().Where(x => x.AccountID == accountId).FirstOrDefault();
+            return _dbContext.Set<Loans>().Where(x => x.AccountID == accountId).ToList();
         }
 
         public async Task<Loans> RegisterLoan(Loans loan)

@@ -6,7 +6,7 @@ namespace BMS.Infrastructure.Abstraction
 {
     public interface IAccountRepository
     {
-        Accounts GetAccount(string username, string password);
+        bool GetAccount(string username, string password);
         Accounts GetAccountById(Guid accountId);
         Task<Accounts> RegisterAccount(Accounts account);
         Task UpdateAccount(Accounts account);

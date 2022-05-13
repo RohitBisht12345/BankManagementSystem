@@ -1,6 +1,6 @@
 ﻿using BMS.Models.Entities;
 using BMS.Services.Abstraction;
-using BMS.Services.Models;
+using BMS.Services.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,9 +23,9 @@ namespace BMS.API.Controllers
 
         [HttpGet]
         [Route("GetAccount")]
-        public async Task<ActionResult> GetAccount(string userName, string password)
+        public async Task<ActionResult> GetAccount(Guid accountId)
         {
-            var response = await _requestProcessor.GetAccount(userName, password);
+            var response = await _requestProcessor.GetAccountById(accountId);
 
             return response.ResponseCode switch
             {
@@ -50,10 +50,15 @@ namespace BMS.API.Controllers
             };
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("RegisterAccount")]
         public async Task<ActionResult> PostAccount([FromBody] Accounts accounts)
         {
+            int x = 0;
+            int y = 10;
+            int z = y / x;
+
             var response = await _requestProcessor.PostAccount(accounts);
             return response.ResponseCode switch
             {

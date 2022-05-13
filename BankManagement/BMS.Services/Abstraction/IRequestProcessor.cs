@@ -1,6 +1,7 @@
 ﻿using BMS.Models.Entities;
-using BMS.Services.Models;
+using BMS.Services.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BMS.Services.Abstraction
@@ -11,11 +12,11 @@ namespace BMS.Services.Abstraction
 
         Task<BmsResponse<string>> PutAccount(Accounts account);
 
-        Task<BmsResponse<Accounts>> GetAccount(string username, string password);
+        Task<BmsResponse<Accounts>> GetAccountById(Guid accountId);
 
         Task<BmsResponse<string>> PostLoan(Loans loan);
 
-        Task<BmsResponse<Loans>> GetLoan(Guid accountId);
+        Task<BmsResponse<IEnumerable<Loans>>> GetLoan(Guid accountId);
 
     }
 }

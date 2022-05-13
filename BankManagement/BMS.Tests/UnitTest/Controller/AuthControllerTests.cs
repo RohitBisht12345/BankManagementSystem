@@ -1,7 +1,10 @@
-﻿using BMS.API.Controllers;
+﻿using AutoFixture.NUnit3;
+using BMS.API.Controllers;
 using BMS.API.Models;
+using BMS.Infrastructure.Abstraction;
 using BMS.Tests.Autofixture;
 using Microsoft.Extensions.Configuration;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Net;
@@ -14,23 +17,38 @@ namespace BMS.Tests.UnitTest.Controller
         [Test]
         [UseFakeDependencies]
         public void AuthController_WithNullConfiguration_ThrowArgumentNullException(
-            IConfiguration config)
+            IConfiguration config,
+            IAccountRepository accountRepository)
         {
             //Arrange
             config = null;
 
             //Act && Assert
-            Assert.Throws<ArgumentNullException>(() => new AuthController(config));
+            Assert.Throws<ArgumentNullException>(() => new AuthController(config, accountRepository));
+        }
+
+        [Test]
+        [UseFakeDependencies]
+        public void AuthController_WithNullAcccountRepository_ThrowArgumentNullException(
+            IConfiguration config,
+            IAccountRepository accountRepository)
+        {
+            //Arrange
+            accountRepository = null;
+
+            //Act && Assert
+            Assert.Throws<ArgumentNullException>(() => new AuthController(config, accountRepository));
         }
 
         [Test]
         [UseFakeDependencies]
         public void Authenticate_WithValidRequest_ReturnSuccessToken(
             UserModel request,
-            IConfiguration config)
+            IConfiguration config,
+            IAccountRepository accountRepository)
         {
             //Act
-            var subject = new AuthController(config);
+            var subject = new AuthController(config, accountRepository);
             var response = subject.Authenticate(request);
 
             //Assert
@@ -41,14 +59,20 @@ namespace BMS.Tests.UnitTest.Controller
         [UseFakeDependencies]
         public void Authenticate_WithInValidRequest_ReturnUnauthorizedResponse(
            UserModel request,
-           IConfiguration config)
+           IConfiguration config,
+           IAccountRepository accountRepository,
+           [Frozen] Mock<IAccountRepository> mockAccountRepository)
         {
             //Arrange
             request.Username = "adm";
             request.Password = "adm";
 
+            //Arrange
+            mockAccountRepository.Setup(x => x.GetAccount(It.IsAny<string>(), It.IsAny<string>()))
+               .Returns(false);
+
             //Act
-            var subject = new AuthController(config);
+            var subject = new AuthController(config, accountRepository);
             var response = subject.Authenticate(request);
 
             //Assert

@@ -1,6 +1,7 @@
 using BMS.Infrastructure;
 using BMS.Infrastructure.Persistance;
 using BMS.Services;
+using BMS.Services.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,24 +59,19 @@ namespace BMS.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                // Takes all of our migrations files and apply them against the database in case they are not implemented
                 serviceScope.ServiceProvider.GetService<BmsContext>().Database.Migrate();
             }
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BMS.API v1"));
             }
-
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseRouting();
-
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

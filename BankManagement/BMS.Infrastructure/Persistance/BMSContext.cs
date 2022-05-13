@@ -1,5 +1,6 @@
 ﻿using BMS.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BMS.Infrastructure.Persistance
 {
@@ -13,9 +14,5 @@ namespace BMS.Infrastructure.Persistance
         public DbSet<Accounts> Accounts { get; set; }
         public DbSet<Loans> Loans { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=bankdb,1433;Database=BankDb;User Id=SA;Password=SwN12345678;");
-        }
     }
 }
