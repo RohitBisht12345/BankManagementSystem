@@ -87,11 +87,11 @@ namespace BMS.Services.Implementation
                 var loanResponse = _loanRepository.GetLoanById(accountId);
                 var successResponse = new BmsResponse<IEnumerable<Loans>>()
                 {
-                    IsSuccess = loanResponse != null,
-                    ResponseCode = loanResponse != null ? ResponseCode.Success : ResponseCode.NotFound,
+                    IsSuccess = loanResponse.Any(),
+                    ResponseCode = loanResponse.Any() ? ResponseCode.Success : ResponseCode.NotFound,
                     Errors = null,
                     Data = loanResponse,
-                    Message = loanResponse != null ? Constants.Success : Constants.RecordNotFound
+                    Message = loanResponse.Any() ? Constants.Success : Constants.RecordNotFound
                 };
                 _logger.LogInformation("GetLoan completed");
                 return Task.FromResult(successResponse);

@@ -41,7 +41,7 @@ namespace BMS.Services.Implementation
             {
                 ValidationErrors.AddLast($"{nameof(request.Country)} must have a value");
             }
-            if (string.IsNullOrEmpty(request.EmailAddress) || (Regex.IsMatch(request.EmailAddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)))
+            if (string.IsNullOrEmpty(request.EmailAddress) || !(Regex.IsMatch(request.EmailAddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)))
             {
                 ValidationErrors.AddLast($"{nameof(request.EmailAddress)} must have a valid email");
             }
@@ -49,7 +49,7 @@ namespace BMS.Services.Implementation
             {
                 ValidationErrors.AddLast($"{nameof(request.Name)} must have a value");
             }
-            if (string.IsNullOrEmpty(request.PAN) || (Regex.IsMatch(request.PAN, @"([A-Z]){5}([0-9]){4}([A-Z]){1}$", RegexOptions.IgnoreCase)) )
+            if (string.IsNullOrEmpty(request.PAN) || !(Regex.IsMatch(request.PAN, @"([A-Z]){5}([0-9]){4}([A-Z]){1}$", RegexOptions.IgnoreCase)) )
             {
                 ValidationErrors.AddLast($"{nameof(request.PAN)} must have a alphanumeric value");
             }
@@ -61,7 +61,7 @@ namespace BMS.Services.Implementation
             {
                 ValidationErrors.AddLast($"{nameof(request.DOB)} must have a value");
             }
-            if (Regex.IsMatch(request.ContactNo, @"^[6-9]\d{9}$", RegexOptions.IgnoreCase))
+            if (!Regex.IsMatch(request.ContactNo, @"^[6-9]\d{9}$", RegexOptions.IgnoreCase))
             {
                 ValidationErrors.AddLast($"{nameof(request.ContactNo)} must not exceed 10 digit");
             }

@@ -69,11 +69,11 @@ namespace BMS.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BMS.API v1"));
             }
-            app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+         
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

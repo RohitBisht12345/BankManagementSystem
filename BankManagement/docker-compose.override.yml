@@ -7,7 +7,7 @@ services:
     depends_on:
       - "bankdb"
     ports:
-      - "8001:80"
+      - "8000:80"
 
   bankdb:
     container_name: bankdb
