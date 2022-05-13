@@ -55,9 +55,6 @@ namespace BMS.API.Controllers
         [Route("RegisterAccount")]
         public async Task<ActionResult> PostAccount([FromBody] Accounts accounts)
         {
-            int x = 0;
-            int y = 10;
-            int z = y / x;
 
             var response = await _requestProcessor.PostAccount(accounts);
             return response.ResponseCode switch
